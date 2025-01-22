@@ -121,9 +121,9 @@ return {
                 },
                 float      = {
                     fg        = palette.oldWhite,
-                    bg        = palette.sumiInk0,
+                    bg        = palette.sumiInk2,
                     fg_border = palette.sumiInk6,
-                    bg_border = palette.sumiInk0,
+                    bg_border = palette.sumiInk2,
                 },
             },
             syn = {

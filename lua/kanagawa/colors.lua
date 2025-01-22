@@ -1,18 +1,28 @@
+local c = require("kanagawa.lib.color")
+
+local function sat(hex, s)
+    return c(hex):saturate(s):to_hex()
+end
+
+local function bg(hex)
+    return sat(hex, -0.8)
+end
+
 ---@class PaletteColors
 local palette = {
 
-    -- Bg Shades
-    sumiInk0 = "#16161D",
-    sumiInk1 = "#181820",
-    sumiInk2 = "#1a1a22",
-    sumiInk3 = "#1F1F28",
-    sumiInk4 = "#2A2A37",
-    sumiInk5 = "#363646",
-    sumiInk6 = "#54546D", --fg
+    -- Bg Shade
+    sumiInk0 = bg("#16161D"),
+    sumiInk1 = bg("#181820"),
+    sumiInk2 = bg("#1a1a22"),
+    sumiInk3 = bg("#1F1F28"),
+    sumiInk4 = bg("#2A2A37"),
+    sumiInk5 = bg("#363646"),
+    sumiInk6 = bg("#54546D"), --fg
 
     -- Popup and Floats
-    waveBlue1 = "#223249",
-    waveBlue2 = "#2D4F67",
+    waveBlue1 = bg("#223249"),
+    waveBlue2 = bg("#2D4F67"),
 
     -- Diff and Git
     winterGreen = "#2B3328",
@@ -36,7 +46,7 @@ local palette = {
 
     oniViolet = "#957FB8",
     oniViolet2 = "#b8b4d0",
-    crystalBlue = "#7E9CD8",
+    crystalBlue = sat("#7E9CD8", -0.2),
     springViolet1 = "#938AA9",
     springViolet2 = "#9CABCA",
     springBlue = "#7FB4CA",
@@ -48,15 +58,15 @@ local palette = {
     -- waveAqua5  = "#6CAF95",
     -- waveAqua3  = "#68AD99",
 
-    springGreen = "#98BB6C",
+    springGreen = sat("#98BB6C", -0.2),
     boatYellow1 = "#938056",
     boatYellow2 = "#C0A36E",
     carpYellow = "#E6C384",
 
     sakuraPink = "#D27E99",
     waveRed = "#E46876",
-    peachRed = "#FF5D62",
-    surimiOrange = "#FFA066",
+    peachRed = sat("#FF5D62", -0.1),
+    surimiOrange = sat("#FFA066", -0.2),
     katanaGray = "#717C7C",
 
     dragonBlack0 = "#0d0c0c",
@@ -77,12 +87,12 @@ local palette = {
     dragonGray2 = "#9e9b93",
     dragonGray3 = "#7a8382",
     dragonBlue2 = "#8ba4b0",
-    dragonViolet= "#8992a7",
+    dragonViolet = "#8992a7",
     dragonRed = "#c4746e",
     dragonAqua = "#8ea4a2",
     dragonAsh = "#737c73",
     dragonTeal = "#949fb5",
-    dragonYellow = "#c4b28a",--"#a99c8b",
+    dragonYellow = "#c4b28a", --"#a99c8b",
     -- "#8a9aa3",
 
     lotusInk1 = "#545464",
@@ -111,7 +121,7 @@ local palette = {
     lotusPink = "#b35b79",
     lotusOrange = "#cc6d00",
     lotusOrange2 = "#e98a00",
-    lotusYellow ="#77713f",
+    lotusYellow = "#77713f",
     lotusYellow2 = "#836f4a",
     lotusYellow3 = "#de9800",
     lotusYellow4 = "#f9d791",
