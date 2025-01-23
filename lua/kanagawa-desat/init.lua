@@ -22,9 +22,6 @@ M.config = {
     overrides = function()
         return {}
     end,
-    ---@type { dark: string, light: string }
-    background = { dark = "wave", light = "lotus" },
-    theme = "wave",
     compile = false,
 }
 
@@ -46,16 +43,16 @@ end
 --- load the colorscheme
 ---@param theme? string
 function M.load(theme)
-    local utils = require("kanagawa.utils")
+    local utils = require("kanagawa-desat.utils")
 
-    theme = theme or M.config.background[vim.o.background] or M.config.theme
+    theme = theme or "desat"
     M._CURRENT_THEME = theme
 
     if vim.g.colors_name then
         vim.cmd("hi clear")
     end
 
-    vim.g.colors_name = "kanagawa"
+    vim.g.colors_name = "kanagawa-desat"
     vim.o.termguicolors = true
 
     if M.config.compile then
@@ -66,16 +63,16 @@ function M.load(theme)
         M.compile()
         utils.load_compiled(theme)
     else
-        local colors = require("kanagawa.colors").setup({ theme = theme, colors = M.config.colors })
-        local highlights = require("kanagawa.highlights").setup(colors, M.config)
-        require("kanagawa.highlights").highlight(highlights, M.config.terminalColors and colors.theme.term or {})
+        local colors = require("kanagawa-desat.colors").setup({ theme = theme, colors = M.config.colors })
+        local highlights = require("kanagawa-desat.highlights").setup(colors, M.config)
+        require("kanagawa-desat.highlights").highlight(highlights, M.config.terminalColors and colors.theme.term or {})
     end
 end
 
 function M.compile()
-    for theme, _ in pairs(require("kanagawa.themes")) do
-        local colors = require("kanagawa.colors").setup({ theme = theme, colors = M.config.colors })
-        local highlights = require("kanagawa.highlights").setup(colors, M.config)
+    for theme, _ in pairs(require("kanagawa-desat.themes")) do
+        local colors = require("kanagawa-desat.colors").setup({ theme = theme, colors = M.config.colors })
+        local highlights = require("kanagawa-desat.highlights").setup(colors, M.config)
         require("kanagawa.utils").compile(theme, highlights, M.config.terminalColors and colors.theme.term or {})
     end
 end

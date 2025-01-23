@@ -3,7 +3,7 @@ local M = {}
 ---@param colors KanagawaColors
 ---@param config? KanagawaConfig
 function M.setup(colors, config)
-    config = config or require("kanagawa").config
+    config = config or require("kanagawa-desat").config
     local theme = colors.theme
     return {
         -- @variable                       various variable names

@@ -1,11 +1,25 @@
-local c = require("kanagawa.lib.color")
+local c = require("kanagawa-desat.lib.color")
 
 local function sat(hex, s)
     return c(hex):saturate(s):to_hex()
 end
 
+local function bright(hex, b)
+    return c(hex):brighten(b):to_hex()
+end
+
 local function bg(hex)
-    return sat(hex, -0.8)
+    return sat(bright(hex, 0.042), -1.)
+end
+
+local function fg(hex)
+    return hex
+    -- return sat(hex, 0.1)
+end
+
+local function id(hex)
+    return hex
+    -- return sat(hex, 0)
 end
 
 ---@class PaletteColors
@@ -25,49 +39,49 @@ local palette = {
     waveBlue2 = bg("#2D4F67"),
 
     -- Diff and Git
-    winterGreen = "#2B3328",
-    winterYellow = "#49443C",
-    winterRed = "#43242B",
-    winterBlue = "#252535",
-    autumnGreen = "#76946A",
-    autumnRed = "#C34043",
-    autumnYellow = "#DCA561",
+    winterGreen = fg("#2B3328"),
+    winterYellow = fg("#49443C"),
+    winterRed = fg("#43242B"),
+    winterBlue = fg("#252535"),
+    autumnGreen = fg("#76946A"),
+    autumnRed = fg("#C34043"),
+    autumnYellow = fg("#DCA561"),
 
     -- Diag
-    samuraiRed = "#E82424",
-    roninYellow = "#FF9E3B",
-    waveAqua1 = "#6A9589",
-    dragonBlue = "#658594",
+    samuraiRed = fg("#E82424"),
+    roninYellow = fg("#FF9E3B"),
+    waveAqua1 = fg("#6A9589"),
+    dragonBlue = fg("#658594"),
 
     -- Fg and Comments
-    oldWhite = "#C8C093",
-    fujiWhite = "#DCD7BA",
-    fujiGray = "#727169",
+    oldWhite = id("#C8C093"),
+    fujiWhite = id("#DCD7BA"),
+    fujiGray = id("#727169"),
 
-    oniViolet = "#957FB8",
-    oniViolet2 = "#b8b4d0",
-    crystalBlue = sat("#7E9CD8", -0.2),
-    springViolet1 = "#938AA9",
-    springViolet2 = "#9CABCA",
-    springBlue = "#7FB4CA",
-    lightBlue = "#A3D4D5", -- unused yet
-    waveAqua2 = "#7AA89F", -- improve lightness: desaturated greenish Aqua
+    oniViolet = fg("#957FB8"),
+    oniViolet2 = fg("#b8b4d0"),
+    crystalBlue = fg("#7E9CD8"),
+    springViolet1 = fg("#938AA9"),
+    springViolet2 = fg("#9CABCA"),
+    springBlue = fg("#7FB4CA"),
+    lightBlue = fg("#A3D4D5"), -- unused yet
+    waveAqua2 = fg("#7AA89F"), -- improve lightness: desaturated greenish Aqua
 
     -- waveAqua2  = "#68AD99",
     -- waveAqua4  = "#7AA880",
     -- waveAqua5  = "#6CAF95",
     -- waveAqua3  = "#68AD99",
 
-    springGreen = sat("#98BB6C", -0.2),
-    boatYellow1 = "#938056",
-    boatYellow2 = "#C0A36E",
-    carpYellow = "#E6C384",
+    springGreen = fg("#98BB6C"),
+    boatYellow1 = fg("#938056"),
+    boatYellow2 = fg("#C0A36E"),
+    carpYellow = fg("#E6C384"),
 
-    sakuraPink = "#D27E99",
-    waveRed = "#E46876",
-    peachRed = sat("#FF5D62", -0.1),
-    surimiOrange = sat("#FFA066", -0.2),
-    katanaGray = "#717C7C",
+    sakuraPink = fg("#D27E99"),
+    waveRed = fg("#E46876"),
+    peachRed = fg("#FF5D62"),
+    surimiOrange = fg("#FFA066"),
+    katanaGray = fg("#717C7C"),
 
     dragonBlack0 = "#0d0c0c",
     dragonBlack1 = "#12120f",
@@ -137,6 +151,25 @@ local palette = {
     lotusCyan = "#d7e3d8",
 }
 
+local function dump(o)
+    if type(o) == "table" then
+        local s = "{ "
+        for k, v in pairs(o) do
+            -- if type(k) ~= "number" then
+            --     k = '"' .. k .. '"'
+            -- end
+            s = s .. k .. " = " .. dump(v) .. ","
+        end
+        return s .. "} "
+    elseif type(o) == "string" then
+        return '"' .. o .. '"'
+    else
+        return tostring(o)
+    end
+end
+
+-- vim.notify(dump(palette))
+
 local M = {}
 --- Generate colors table:
 --- * opts:
@@ -148,21 +181,25 @@ local M = {}
 ---@return { theme: ThemeColors, palette: PaletteColors}
 function M.setup(opts)
     opts = opts or {}
-    local override_colors = opts.colors or require("kanagawa").config.colors
-    local theme = opts.theme or require("kanagawa")._CURRENT_THEME -- WARN: this fails if called before kanagawa.load()
+    local override_colors = opts.colors or require("kanagawa-desat").config.colors
+    -- local theme = opts.theme or require("kanagawa")._CURRENT_THEME -- WARN: this fails if called before kanagawa.load()
+    local theme = "desat"
 
     if not theme then
-        error("kanagawa.colors.setup(): Unable to infer `theme`. Either specify a theme or call this function after ':colorscheme kanagawa'")
+        error(
+            "kanagawa.colors.setup(): Unable to infer `theme`. Either specify a theme or call this function after ':colorscheme kanagawa'"
+        )
     end
 
     -- Add to and/or override palette_colors
     local updated_palette_colors = vim.tbl_extend("force", palette, override_colors.palette or {})
 
     -- Generate the theme according to the updated palette colors
-    local theme_colors = require("kanagawa.themes")[theme](updated_palette_colors)
+    local theme_colors = require("kanagawa-desat.themes")[theme](updated_palette_colors)
 
     -- Add to and/or override theme_colors
-    local theme_overrides = vim.tbl_deep_extend("force", override_colors.theme["all"] or {}, override_colors.theme[theme] or {} )
+    local theme_overrides =
+        vim.tbl_deep_extend("force", override_colors.theme["all"] or {}, override_colors.theme[theme] or {})
     local updated_theme_colors = vim.tbl_deep_extend("force", theme_colors, theme_overrides)
     -- return palette_colors AND theme_colors
 

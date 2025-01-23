@@ -5,7 +5,7 @@ local M = {}
 ---@param config? KanagawaConfig
 function M.setup(colors, config)
     local theme = colors.theme
-    config = config or require("kanagawa").config
+    config = config or require("kanagawa-desat").config
 
     return {
         -- ColorColumn	Used for the columns set with 'colorcolumn'.
@@ -66,7 +66,7 @@ function M.setup(colors, config)
         -- ModeMsg		'showmode' message (e.g., "-- INSERT --").
         ModeMsg = { fg = theme.diag.warning, bold = true },
         -- MsgArea		Area for messages and cmdline.
-        MsgArea = vim.o.cmdheight == 0 and {link = 'StatusLine'} or { fg = theme.ui.fg_dim },
+        MsgArea = vim.o.cmdheight == 0 and { link = "StatusLine" } or { fg = theme.ui.fg_dim },
         -- MsgSeparator	Separator for scrolled messages |msgsep|.
         MsgSeparator = { bg = vim.o.cmdheight == 0 and theme.ui.bg or theme.ui.bg_m3 },
         -- MoreMsg		|more-prompt|
@@ -177,10 +177,26 @@ function M.setup(colors, config)
         DiagnosticVirtualTextInfo = { link = "DiagnosticInfo" },
         DiagnosticVirtualTextHint = { link = "DiagnosticHint" },
 
-        DiagnosticUnderlineError = { undercurl = config.undercurl, underline = not config.undercurl, sp = theme.diag.error },
-        DiagnosticUnderlineWarn = { undercurl = config.undercurl, underline = not config.undercurl, sp = theme.diag.warning },
-        DiagnosticUnderlineInfo = { undercurl = config.undercurl, underline = not config.undercurl, sp = theme.diag.info },
-        DiagnosticUnderlineHint = { undercurl = config.undercurl, underline = not config.undercurl, sp = theme.diag.hint },
+        DiagnosticUnderlineError = {
+            undercurl = config.undercurl,
+            underline = not config.undercurl,
+            sp = theme.diag.error,
+        },
+        DiagnosticUnderlineWarn = {
+            undercurl = config.undercurl,
+            underline = not config.undercurl,
+            sp = theme.diag.warning,
+        },
+        DiagnosticUnderlineInfo = {
+            undercurl = config.undercurl,
+            underline = not config.undercurl,
+            sp = theme.diag.info,
+        },
+        DiagnosticUnderlineHint = {
+            undercurl = config.undercurl,
+            underline = not config.undercurl,
+            sp = theme.diag.hint,
+        },
 
         LspSignatureActiveParameter = { fg = theme.diag.warning },
         LspCodeLens = { fg = theme.syn.comment },

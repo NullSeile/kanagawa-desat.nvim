@@ -1,4 +1,4 @@
-local hsluv = require("kanagawa.lib.hsluv")
+local hsluv = require("kanagawa-desat.lib.hsluv")
 
 ---@class HSLuvColor
 local Color = {}

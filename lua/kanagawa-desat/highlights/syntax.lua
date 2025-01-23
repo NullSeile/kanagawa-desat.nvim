@@ -5,7 +5,7 @@ local M = {}
 ---@param config? KanagawaConfig
 function M.setup(colors, config)
     local theme = colors.theme
-    config = config or require("kanagawa").config
+    config = config or require("kanagawa-desat").config
 
     return {
         -- *Comment	any comment
